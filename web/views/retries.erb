@@ -4,14 +4,14 @@
   </div>
   <% if @retries.size > 0 && @total_size > @count %>
     <div class="col-sm-4">
-      <%= erb :_paging, :locals => { :url => "#{root_path}retries" } %>
+      <%= erb :_paging, :locals => { :url => "#{frontkiq_path}retries" } %>
     </div>
   <% end %>
   <%= filtering('retries') %>
 </header>
 
 <% if @retries.size > 0 %>
-  <form action="<%= root_path %>retries" method="post">
+  <form action="<%= frontkiq_path %>retries" method="post">
     <%= csrf_tag %>
     <div class="table_container">
       <table class="table table-striped table-bordered table-white">
@@ -38,11 +38,11 @@
               </label>
             </td>
             <td>
-              <a href="<%= root_path %>retries/<%= job_params(entry.item, entry.score) %>"><%= relative_time(entry.at) %></a>
+              <a href="<%= frontkiq_path %>retries/<%= job_params(entry.item, entry.score) %>"><%= relative_time(entry.at) %></a>
             </td>
             <td><%= entry['retry_count'] %></td>
             <td>
-              <a href="<%= root_path %>queues/<%= entry.queue %>"><%= entry.queue %></a>
+              <a href="<%= frontkiq_path %>queues/<%= entry.queue %>"><%= entry.queue %></a>
             </td>
             <td><%= entry.display_class %></td>
             <td>
@@ -60,11 +60,11 @@
     <input class="btn btn-danger btn-xs pull-left" type="submit" name="kill" value="<%= t('Kill') %>" />
   </form>
 
-  <form action="<%= root_path %>retries/all/delete" method="post">
+  <form action="<%= frontkiq_path %>retries/all/delete" method="post">
     <%= csrf_tag %>
     <input class="btn btn-danger btn-xs pull-right" type="submit" name="delete" value="<%= t('DeleteAll') %>" data-confirm="<%= t('AreYouSure') %>" />
   </form>
-  <form action="<%= root_path %>retries/all/retry" method="post">
+  <form action="<%= frontkiq_path %>retries/all/retry" method="post">
     <%= csrf_tag %>
     <input class="btn btn-danger btn-xs pull-right" type="submit" name="retry" value="<%= t('RetryAll') %>" data-confirm="<%= t('AreYouSure') %>" />
   </form>

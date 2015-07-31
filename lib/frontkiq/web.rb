@@ -8,6 +8,8 @@ require 'sidekiq/paginator'
 require 'sidekiq/web_helpers'
 require 'frontkiq/web_helpers'
 
+require 'action_view/helpers/asset_url_helper'
+
 module Frontkiq
   class Web < Sinatra::Base
     include Sidekiq::Paginator
@@ -29,15 +31,14 @@ module Frontkiq
       yield self
     end
 
-    enable :sessions
-    use Rack::Protection, :use => :authenticity_token unless ENV['RACK_ENV'] == 'test'
-
     set :root,          self.options[:root]          || File.expand_path(File.dirname(__FILE__) + "/../../web")
     set :public_folder, self.options[:public_folder] || proc { "#{root}/assets" }
     set :views,         proc { "#{root}/views" }
     set :locales, ["#{root}/locales"]
 
-    helpers WebHelpers, Sidekiq::WebHelpers
+    helpers do
+     include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper
+    end
 
     DEFAULT_TABS = {
       "Dashboard" => '',

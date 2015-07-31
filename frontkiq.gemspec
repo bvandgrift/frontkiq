@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = Frontkiq::VERSION
   gem.add_dependency                  'sidekiq', '~> 3.4', '>= 3.4.2'
-  gem.add_development_dependency      'sinatra', '~> 1.4', '>= 1.4.6'
+  gem.add_dependency                  'sinatra', '~> 1.4', '>= 1.4.6'
   gem.add_development_dependency      'minitest', '~> 5.7', '>= 5.7.0'
   gem.add_development_dependency      'rake', '~> 10.0'
   gem.add_development_dependency      'rails', '~> 4', '>= 3.2.0'

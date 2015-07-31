@@ -128,11 +128,11 @@ module Frontkiq
 
     # TODO: make something out of this.
     def asset_path
-      "assets/"
+      "fix-me-assets/"
     end
 
     # TODO: 
-    def root_path
+    def frontkiq_path
       "#{env['SCRIPT_NAME']}/"
     end
 

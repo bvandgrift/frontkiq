@@ -46,3 +46,5 @@ def capture_logging(lvl=Logger::INFO)
     Sidekiq.logger = old
   end
 end
+
+
