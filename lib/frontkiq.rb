@@ -31,4 +31,4 @@ module Frontkiq
   end
 end
 
-require 'frontkiq/rails' if defined?(::Rails::Engine)
+require 'frontkiq/engine'

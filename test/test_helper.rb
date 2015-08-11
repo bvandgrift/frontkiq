@@ -1,8 +1,40 @@
 # Configure Rails Environment
 ENV["RAILS_ENV"] = "test"
 
-require File.expand_path("../../test/dummy/config/environment.rb",  __FILE__)
-require "rails/test_help"
+# coverage?
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter "/test/"
+  end
+end
+
+require File.expand_path('../../test/dummy/config/environment.rb',  __FILE__)
+require 'rails/test_help'
+
+require 'minitest/autorun'
+require 'minitest/pride'
+require 'minitest/rails/capybara'
+
+# celluloud config
+require 'celluloid/test'
+Celluloid.boot
+
+# sidekiq config
+require 'sidekiq'
+require 'sidekiq/util'
+Sidekiq.logger.level = Logger::ERROR
+
+Frontkiq::Test = Minitest::Test
+
+# redis config
+require 'sidekiq/redis_connection'
+REDIS_URL = ENV['REDIS_URL'] || 'redis://localhost/15'
+REDIS = Sidekiq::RedisConnection.create(:url => REDIS_URL, :namespace => 'testy')
+
+Sidekiq.configure_client do |config|
+  config.redis = { :url => REDIS_URL, :namespace => 'testy' }
+end
 
 # Filter out Minitest backtrace while allowing backtrace from other libraries
 # to be shown.

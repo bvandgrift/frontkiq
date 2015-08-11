@@ -1,15 +1,15 @@
-require 'erb'
-require 'yaml'
-require 'sinatra/base'
-
+# require 'yaml'
 require 'sidekiq'
 require 'sidekiq/api'
 require 'sidekiq/paginator'
-require 'sidekiq/web_helpers'
-require 'frontkiq/web_helpers'
+# require 'sidekiq/web_helpers'
+# require 'frontkiq/web_helpers'
 
-require 'action_view/helpers/asset_url_helper'
+class FrontkiqController < ApplicationController
 
+end
+
+=begin
 module Frontkiq
   class Web < Sinatra::Base
     include Sidekiq::Paginator
@@ -37,7 +37,9 @@ module Frontkiq
     set :locales, ["#{root}/locales"]
 
     helpers do
-     include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper
+     include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper,
+       ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::TagHelper,
+       ActionView::Helpers::AssetTagHelper
     end
 
     DEFAULT_TABS = {
@@ -281,3 +283,4 @@ module Frontkiq
     end
   end
 end
+=end

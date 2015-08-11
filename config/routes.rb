@@ -1,2 +1,3 @@
-Rails.application.routes.draw do
+Frontkiq::Engine.routes.draw do
+  root to: "dashboard#index"
 end

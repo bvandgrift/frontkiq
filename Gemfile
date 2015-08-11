@@ -5,6 +5,8 @@ gem 'rails', '~> 4.2'
 
 group :test do
   gem 'simplecov'
+  gem 'minitest'
+  gem 'minitest-rails-capybara'
 end
 
 platforms :rbx do
