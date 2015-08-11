@@ -1,0 +1,60 @@
+.row.header
+  .col-sm-8.pull-left
+    %h3= t('Processes')
+  .col-sm-4.pull-right
+    = form_tag do
+      .btn-group.pull-right
+        = button_tag({ name: 'quiet',    value: 1, class: "btn btn-warn" })
+        = button_tag({ name: 'stop',     value: 1, class: "btn btn-danger" })
+.table_container
+  %table.processes.table.table-hover.table-bordered.table-striped.table-white
+    %thead
+      %th= t('Name')
+      %th= t('Started')
+      %th= t('Threads')
+      %th= t('Busy')
+      %th  
+    - processes.each do |process|
+      %tr
+        %td{:width => "50%"}
+          = "#{process['hostname']}:#{process['pid']}"
+          %span.label.label-success= process.tag
+          - process.labels.each do |label|
+            %span.label.label-info= label
+          %br/
+          %b= "#{t('Queues')}: "
+          = process['queues'] * ", "
+        %td= relative_time(Time.at(process['started_at']))
+        %td= process['concurrency']
+        %td= process['busy']
+        %td
+          .btn-group.pull-right
+            = form_tag do
+              = hidden_field_tag({ name: 'identity', value: process['identity'] })
+              = button_tag({ name: 'quiet',    value: 1, class: "btn btn-warn" })
+              = button_tag({ name: 'stop',     value: 1, class: "btn btn-danger" })
+.row.header
+  .col-sm-7
+    %h3= t('Jobs')
+.table_container
+  %table.workers.table.table-hover.table-bordered.table-striped.table-white
+    %thead
+      %th= t('Process')
+      %th= t('TID')
+      %th= t('JID')
+      %th= t('Queue')
+      %th= t('Job')
+      %th= t('Arguments')
+      %th= t('Started')
+    - workers.each do |process, thread, msg|
+      - job = Sidekiq::Job.new(msg['payload'])
+      %tr
+        %td= process
+        %td= thread
+        %td= job.jid
+        %td
+          %a{:href => frontkiq_queued_jobs_path(queue: msg['queue'])}= msg['queue']
+        %td= job.display_class
+        %td
+          .args= display_args(job.display_args)
+        %td= relative_time(Time.at(msg['run_at']))

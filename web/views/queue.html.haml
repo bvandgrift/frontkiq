@@ -1,0 +1,32 @@
+%body
+  %header.row
+    .col-sm-5
+      %h3
+        = t('CurrentMessagesInQueue', :queue => h(@name))
+        - if @queue.paused?
+          %span.label.label-danger= t('Paused')
+    .col-sm-4.pull-right
+      = erb :_paging, :locals => { :url => "#{frontkiq_path}queues/#{@name}" }
+  .table_container
+    %table.queue.table.table-hover.table-bordered.table-striped
+      %thead
+        %th= t('Job')
+        %th= t('Arguments')
+        %th
+      - @messages.each_with_index do |msg, index|
+        %tr
+          %td= h(msg.display_class)
+          %td
+            - a = msg.display_args.inspect
+            - if a.size > 100
+              = h(msg.display_args.inspect[0..100]) + "... "
+              %button.btn.btn-default.btn-xs{"data-target" => "#worker_#{index}", "data-toggle" => "collapse"}= t('ShowAll')
+              .toggle{:id => "worker_#{index}", :style => "display: none;"}= h(msg.display_args)
+            - else
+              = h(msg.display_args)
+          %td
+            %form{:action => "#{frontkiq_path}queues/#{@name}/delete", :method => "post"}
+              = csrf_tag
+              %input{:name => "key_val", :type => "hidden", :value => "#{h Sidekiq.dump_json(msg.item)}"}/
+              %input.btn.btn-danger.btn-xs{"data-confirm" => "#{t('AreYouSure')}", :name => "delete", :type => "submit", :value => "#{t('Delete')}"}/
+  = erb :_paging, :locals => { :url => "#{frontkiq_path}queues/#{@name}" }

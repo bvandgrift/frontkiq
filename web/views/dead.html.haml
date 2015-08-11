@@ -1,0 +1,22 @@
+= erb :_job_info, :locals => {:job => @dead, :type => :dead}
+%h3= t('Error')
+.table_container
+  %table.error.table.table-bordered.table-striped
+    %tbody
+      %tr
+        %th= t('ErrorClass')
+        %td
+          %code= @dead['error_class']
+      %tr
+        %th= t('ErrorMessage')
+        %td= h(@dead['error_message'])
+      - if !@dead['error_backtrace'].nil?
+        %tr
+          %th= t('ErrorBacktrace')
+          %td
+            %code= @dead['error_backtrace'].join("<br/>")
+%form.form-horizontal{:action => "#{frontkiq_path}morgue/#{job_params(@dead, @dead.score)}", :method => "post"}
+  = csrf_tag
+  %a.btn.btn-default{:href => "#{frontkiq_path}morgue"}= t('GoBack')
+  %input.btn.btn-primary{:name => "retry", :type => "submit", :value => "#{t('RetryNow')}"}/
+  %input.btn.btn-danger{:name => "delete", :type => "submit", :value => "#{t('Delete')}"}/

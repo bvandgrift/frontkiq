@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+    <title>
+      [development]
+      Sidekiq
+    </title>
+    <meta content='width=device-width,initial-scale=1.0' name='viewport'>
+    <link rel="stylesheet" media="screen" href="/stylesheets/bootstrap.css" />
+    <link rel="stylesheet" media="screen" href="/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" />
+    <script src="/assets/application.self-8f06a73c35179188914ab50e057157639fce1401c1cdca640ac9cec33746fc5b.js?body=1"></script>
+    <script src="/javascripts/jquery.timeago.en.js"></script>
+    <meta content='notranslate' name='google'>
+  </head>
+  <body class='admin'>
+    <div class='navbar navbar-default navbar-fixed-top'>
+      <div class='container-fluid'>
+        <div class='navbar-header' data-navbar='static'>
+          <button class='navbar-toggle collapsed' data-target='#navbar-menu' data-toggle='collapse' type='button'>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+            <span class='icon-bar'></span>
+          </button>
+          <div class='navbar-toggle collapsed navbar-livereload'>
+            <a class='btn btn-primary' href='/frontkiq?poll=true' id='live-poll'><span class="translation_missing" title="translation missing: en.LivePoll">Live Poll</span></a>
+            <a class='btn btn-inverse' href='http://localhost:3000/'>Back to App</a>
+          </div>
+          <a class='navbar-brand' href='http://localhost:3000/frontkiq'>
+            Sidekiq
+            <span class='status'>
+              <i class='status-sprite status-idle'></i>
+              <span class="translation_missing" title="translation missing: en.idle">Idle</span>
+            </span>
+          </a>
+        </div>
+        <div class='collapse navbar-collapse' id='navbar-menu'>
+          <ul class='nav navbar-nav' data-navbar='static'>
+            <li class='active'>
+              <a href='/frontkiq'><span class="translation_missing" title="translation missing: en.Dashboard">Dashboard</span></a>
+            </li>
+            <li class=''>
+              <a href='/frontkiq/busy_workers'><span class="translation_missing" title="translation missing: en.Busy Workers">Busy Workers</span></a>
+            </li>
+            <li class=''>
+              <a href='/frontkiq/queued_jobs'><span class="translation_missing" title="translation missing: en.Queued Jobs">Queued Jobs</span></a>
+            </li>
+            <li class=''>
+              <a href='/frontkiq/pending_retries'><span class="translation_missing" title="translation missing: en.Pending Retries">Pending Retries</span></a>
+            </li>
+            <li class=''>
+              <a href='/frontkiq/scheduled_jobs'><span class="translation_missing" title="translation missing: en.Scheduled Jobs">Scheduled Jobs</span></a>
+            </li>
+            <li class=''>
+              <a href='/frontkiq/abandoned_jobs'><span class="translation_missing" title="translation missing: en.Abandoned Jobs">Abandoned Jobs</span></a>
+            </li>
+          </ul>
+          <ul class='nav navbar-nav navbar-right navbar-livereload' data-navbar='static'>
+            <li>
+              <div class='poll-wrapper pull-right'>
+                <a class='btn btn-primary' href='/frontkiq?poll=true' id='live-poll'><span class="translation_missing" title="translation missing: en.LivePoll">Live Poll</span></a>
+                <a class='btn btn-inverse' href='http://localhost:3000/'>Back to App</a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id='page'>
+      <div class='container'>
+        <div class='row'>
+          <div class='col-sm-12 summary_bar'>
+            <ul class='list-unstyled summary row'>
+              <li class='processed col-sm-1'>
+                <span class='count'>0</span>
+                <span class='desc'><span class="translation_missing" title="translation missing: en.Processed">Processed</span></span>
+              </li>
+              <li class='failed col-sm-1'>
+                <span class='count'>0</span>
+                <span class='desc'><span class="translation_missing" title="translation missing: en.Failed">Failed</span></span>
+              </li>
+              <li class='busy col-sm-1'>
+                <a href='/frontkiq/busy_workers'>
+                  <span class='count'>0</span>
+                  <span class='desc'><span class="translation_missing" title="translation missing: en.Busy Workers">Busy Workers</span></span>
+                </a>
+              </li>
+              <li class='enqueued col-sm-1'>
+                <a href='/frontkiq/queued_jobs'>
+                  <span class='count'>0</span>
+                  <span class='desc'><span class="translation_missing" title="translation missing: en.Queued Jobs">Queued Jobs</span></span>
+                </a>
+              </li>
+              <li class='retries col-sm-1'>
+                <a href='/frontkiq/pending_retries'>
+                  <span class='count'>0</span>
+                  <span class='desc'><span class="translation_missing" title="translation missing: en.Pending Retries">Pending Retries</span></span>
+                </a>
+              </li>
+              <li class='scheduled col-sm-1'>
+                <a href='/frontkiq/scheduled_jobs'>
+                  <span class='count'>0</span>
+                  <span class='desc'><span class="translation_missing" title="translation missing: en.Scheduled Jobs">Scheduled Jobs</span></span>
+                </a>
+              </li>
+              <li class='dead col-sm-1'>
+                <a href='/frontkiq/abandoned_jobs'>
+                  <span class='count'>0</span>
+                  <span class='desc'><span class="translation_missing" title="translation missing: en.Abandoned Jobs">Abandoned Jobs</span></span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class='col-sm-12'>
+            <script>
+            //<![CDATA[
+            dashboard.js
+            //]]>
+            </script>
+            <div class='dashboard clearfix'>
+              <h3>
+                <span class="translation_missing" title="translation missing: en.Dashboard">Dashboard</span>
+                <span class='beacon'>
+                  <span class='ring'></span>
+                  <span class='dot'></span>
+                </span>
+              </h3>
+              <div class='interval-slider'>
+                <span class='interval-slider-label'>
+                  <span class="translation_missing" title="translation missing: en.PollingInterval">Polling Interval</span>
+                  :
+                </span>
+                <span class='current-interval'>2 sec</span>
+                <br>
+                <input max='20000' min='2000' step='1000' type='range' value='2000'>
+              </div>
+            </div>
+            <div class='row chart'>
+              <div data-failed-label='&lt;span class="translation_missing" title="translation missing: en.Failed"&gt;Failed&lt;/span&gt;' data-processed-label='&lt;span class="translation_missing" title="translation missing: en.Processed"&gt;Processed&lt;/span&gt;' id='realtime'></div>
+              <div id='realtime-legend'></div>
+            </div>
+            <div class='row chart'>
+              <h5>
+                <span class='history-heading'><span class="translation_missing" title="translation missing: en.History">History</span></span>
+                <a class='history-graph ' href='/?days=7'><span class="translation_missing" title="translation missing: en.OneWeek">One Week</span></a>
+                <a class='history-graph active' href='/'><span class="translation_missing" title="translation missing: en.OneMonth">One Month</span></a>
+                <a class='history-graph ' href='/?days=90'><span class="translation_missing" title="translation missing: en.ThreeMonths">Three Months</span></a>
+                <a class='history-graph ' href='/?days=180'><span class="translation_missing" title="translation missing: en.SixMonths">Six Months</span></a>
+              </h5>
+              <div data-failed-label='&lt;span class="translation_missing" title="translation missing: en.Failed"&gt;Failed&lt;/span&gt;' data-failed='{&amp;quot;2015-08-11&amp;quot;:0,&amp;quot;2015-08-10&amp;quot;:0,&amp;quot;2015-08-09&amp;quot;:0,&amp;quot;2015-08-08&amp;quot;:0,&amp;quot;2015-08-07&amp;quot;:0,&amp;quot;2015-08-06&amp;quot;:0,&amp;quot;2015-08-05&amp;quot;:0,&amp;quot;2015-08-04&amp;quot;:0,&amp;quot;2015-08-03&amp;quot;:0,&amp;quot;2015-08-02&amp;quot;:0,&amp;quot;2015-08-01&amp;quot;:0,&amp;quot;2015-07-31&amp;quot;:0,&amp;quot;2015-07-30&amp;quot;:0,&amp;quot;2015-07-29&amp;quot;:0,&amp;quot;2015-07-28&amp;quot;:0,&amp;quot;2015-07-27&amp;quot;:0,&amp;quot;2015-07-26&amp;quot;:0,&amp;quot;2015-07-25&amp;quot;:0,&amp;quot;2015-07-24&amp;quot;:0,&amp;quot;2015-07-23&amp;quot;:0,&amp;quot;2015-07-22&amp;quot;:0,&amp;quot;2015-07-21&amp;quot;:0,&amp;quot;2015-07-20&amp;quot;:0,&amp;quot;2015-07-19&amp;quot;:0,&amp;quot;2015-07-18&amp;quot;:0,&amp;quot;2015-07-17&amp;quot;:0,&amp;quot;2015-07-16&amp;quot;:0,&amp;quot;2015-07-15&amp;quot;:0,&amp;quot;2015-07-14&amp;quot;:0,&amp;quot;2015-07-13&amp;quot;:0}' data-processed-label='&lt;span class="translation_missing" title="translation missing: en.Processed"&gt;Processed&lt;/span&gt;' data-processed='{&amp;quot;2015-08-11&amp;quot;:0,&amp;quot;2015-08-10&amp;quot;:0,&amp;quot;2015-08-09&amp;quot;:0,&amp;quot;2015-08-08&amp;quot;:0,&amp;quot;2015-08-07&amp;quot;:0,&amp;quot;2015-08-06&amp;quot;:0,&amp;quot;2015-08-05&amp;quot;:0,&amp;quot;2015-08-04&amp;quot;:0,&amp;quot;2015-08-03&amp;quot;:0,&amp;quot;2015-08-02&amp;quot;:0,&amp;quot;2015-08-01&amp;quot;:0,&amp;quot;2015-07-31&amp;quot;:0,&amp;quot;2015-07-30&amp;quot;:0,&amp;quot;2015-07-29&amp;quot;:0,&amp;quot;2015-07-28&amp;quot;:0,&amp;quot;2015-07-27&amp;quot;:0,&amp;quot;2015-07-26&amp;quot;:0,&amp;quot;2015-07-25&amp;quot;:0,&amp;quot;2015-07-24&amp;quot;:0,&amp;quot;2015-07-23&amp;quot;:0,&amp;quot;2015-07-22&amp;quot;:0,&amp;quot;2015-07-21&amp;quot;:0,&amp;quot;2015-07-20&amp;quot;:0,&amp;quot;2015-07-19&amp;quot;:0,&amp;quot;2015-07-18&amp;quot;:0,&amp;quot;2015-07-17&amp;quot;:0,&amp;quot;2015-07-16&amp;quot;:0,&amp;quot;2015-07-15&amp;quot;:0,&amp;quot;2015-07-14&amp;quot;:0,&amp;quot;2015-07-13&amp;quot;:0}' data-update-url='/stats' id='history'></div>
+              <div id='history-legend'></div>
+            </div>
+            <br>
+            <h5>Redis</h5>
+            <div class='redis-wrapper'>
+              <div class='stats-container'>
+                <div class='stat'>
+                  <h3 class='redis_version'>2.8.19</h3>
+                  <p><span class="translation_missing" title="translation missing: en.Version">Version</span></p>
+                </div>
+                <div class='stat'>
+                  <h3 class='uptime_in_days'>0</h3>
+                  <p><span class="translation_missing" title="translation missing: en.Uptime">Uptime</span></p>
+                </div>
+                <div class='stat'>
+                  <h3 class='connected_clients'>1</h3>
+                  <p><span class="translation_missing" title="translation missing: en.Connections">Connections</span></p>
+                </div>
+                <div class='stat'>
+                  <h3 class='used_memory_human'>490.84K</h3>
+                  <p><span class="translation_missing" title="translation missing: en.MemoryUsage">Memory Usage</span></p>
+                </div>
+                <div class='stat'>
+                  <h3 class='used_memory_peak_human'>491.84K</h3>
+                  <p><span class="translation_missing" title="translation missing: en.PeakMemoryUsage">Peak Memory Usage</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class='navbar navbar-fixed-bottom navbar-inverse'>
+      <div class='navbar-inner'>
+        <div class='container text-center'>
+          <ul class='nav'>
+            <li>
+              <p class='navbar-text' style='color:white;'>0.0.1</p>
+            </li>
+            <li>
+              <p class='navbar-text redis-url'>
+                Redis: redis://127.0.0.1:6379/0
+              </p>
+            </li>
+            <li>
+              <p class='navbar-text'>
+                <span class="translation_missing" title="translation missing: en.Time">Time</span>
+                : 16:22:18 UTC
+              </p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>

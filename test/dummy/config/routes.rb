@@ -1,3 +1,4 @@
 Rails.application.routes.draw do
-  mount Frontkiq::Engine => '/frontkiq'
+  # ladies and gentlemen, @adamhunter!
+  root to: ->(_) { [200, {}, ['Werd']] }
 end

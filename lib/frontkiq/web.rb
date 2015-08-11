@@ -40,15 +40,6 @@ module Frontkiq
      include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper
     end
 
-    DEFAULT_TABS = {
-      "Dashboard" => '',
-      "Busy"      => 'busy',
-      "Queues"    => 'queues',
-      "Retries"   => 'retries',
-      "Scheduled" => 'scheduled',
-      "Dead"      => 'morgue',
-    }
-
     class << self
       def default_tabs
         DEFAULT_TABS
@@ -78,11 +69,6 @@ module Frontkiq
         end
       end
       redirect "#{root_path}busy"
-    end
-
-    get "/queues" do
-      @queues = Sidekiq::Queue.all
-      erb :queues
     end
 
     get "/queues/:name" do

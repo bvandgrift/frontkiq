@@ -1,0 +1,25 @@
+!!!
+%html
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}/
+    %title
+      = environment_title_prefix
+      = Sidekiq::NAME
+    %meta{:content => "width=device-width,initial-scale=1.0", :name => "viewport"}/
+    = stylesheet_link_tag 'bootstrap.css'
+    = stylesheet_link_tag 'application.css'
+    = javascript_include_tag 'application.js'
+    = javascript_include_tag "jquery.timeago.#{locale}"
+    %meta{:content => "notranslate", :name => "google"}/
+    = display_custom_head
+  %body.admin
+    = erb :_nav
+    #page
+      .container
+        .row
+          .col-sm-12.summary_bar
+            = erb :_summary
+          .col-sm-12
+            = yield
+    = erb :_footer
+    = erb :_poll_js

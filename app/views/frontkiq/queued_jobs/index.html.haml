@@ -1,0 +1,19 @@
+%h3= t('Queues')
+.table_container
+  %table.queues.table.table-hover.table-bordered.table-striped.table-white
+    %thead
+      %th= t('Queue')
+      %th= t('Size')
+      %th= t('Actions')
+    - queues.each do |queue|
+      %tr
+        %td
+          %a{:href => "#{frontkiq_path}queues/#{queue.name}"}= queue.name
+          - if queue.paused?
+            %span.label.label-danger= t('Paused')
+        %td
+          = number_with_delimiter(queue.size)
+        %td{:width => "20%"}
+          %form{:action => "#{frontkiq_path}queues/#{queue.name}", :method => "post"}
+            = csrf_tag
+            %input.btn.btn-danger.btn-xs{"data-confirm" => "#{t('AreYouSureDeleteQueue', :queue => h(queue.name))}", :name => "delete", :type => "submit", :value => "#{t('Delete')}"}/

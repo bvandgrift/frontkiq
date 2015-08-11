@@ -1,0 +1,23 @@
+.navbar.navbar-default.navbar-fixed-top
+  .container-fluid
+    .navbar-header{"data-navbar" => "static"}
+      %button.navbar-toggle.collapsed{"data-target" => "#navbar-menu", "data-toggle" => "collapse", :type => "button"}
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+      .navbar-toggle.collapsed.navbar-livereload
+        = render 'frontkiq/shared/poll_link'
+        %a.btn.btn-inverse{:href => root_url} Back to App
+      %a.navbar-brand{:href => frontkiq_root_url}
+        = Sidekiq::NAME
+        = render 'frontkiq/shared/status'
+    #navbar-menu.collapse.navbar-collapse
+      %ul.nav.navbar-nav{"data-navbar" => "static"}
+        - frontkiq_tabs.each do |title, url|
+          %li{:class => "#{current_page?(url) ? 'active' : ''}"}
+            %a{:href => "#{url}"}= t(title)
+      %ul.nav.navbar-nav.navbar-right.navbar-livereload{"data-navbar" => "static"}
+        %li
+          .poll-wrapper.pull-right
+            = render 'frontkiq/shared/poll_link'
+            %a.btn.btn-inverse{:href => root_url} Back to App

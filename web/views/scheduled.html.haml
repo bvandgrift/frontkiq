@@ -1,0 +1,36 @@
+%body
+  %header.row
+    .col-sm-5
+      %h3= t('ScheduledJobs')
+    - if @scheduled.size > 0 && @total_size > @count
+      .col-sm-4
+        = erb :_paging, :locals => { :url => "#{frontkiq_path}scheduled" }
+    = filtering('scheduled')
+  - if @scheduled.size > 0
+    %form{:action => "#{frontkiq_path}scheduled", :method => "post"}
+      = csrf_tag
+      .table_container
+        %table.table.table-striped.table-bordered.table-white
+          %thead
+            %tr
+              %th{:width => "20px"}
+                %input.check_all{:type => "checkbox"}/
+              %th= t('When')
+              %th= t('Queue')
+              %th= t('Job')
+              %th= t('Arguments')
+          - @scheduled.each do |entry|
+            %tr
+              %td
+                %input{:name => "key[]", :type => "checkbox", :value => "#{job_params(entry.item, entry.score)}"}/
+              %td
+                %a{:href => "#{frontkiq_path}scheduled/#{job_params(entry.item, entry.score)}"}= relative_time(entry.at)
+              %td
+                %a{:href => "#{frontkiq_path}queues/#{entry.queue}"}= entry.queue
+              %td= entry.display_class
+              %td
+                .args= display_args(entry.display_args)
+      %input.btn.btn-danger.pull-right{:name => "delete", :type => "submit", :value => "#{t('Delete')}"}/
+      %input.btn.btn-danger.pull-right{:name => "add_to_queue", :type => "submit", :value => "#{t('AddToQueue')}"}/
+  - else
+    .alert.alert-success= t('NoScheduledFound')
