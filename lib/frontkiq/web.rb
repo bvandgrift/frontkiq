@@ -9,6 +9,9 @@ require 'sidekiq/web_helpers'
 require 'frontkiq/web_helpers'
 
 require 'action_view/helpers/asset_url_helper'
+require 'action_view/helpers/javascript_helper'
+require 'action_view/helpers/tag_helper'
+
 
 module Frontkiq
   class Web < Sinatra::Base
@@ -37,7 +40,9 @@ module Frontkiq
     set :locales, ["#{root}/locales"]
 
     helpers do
-     include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper
+     include WebHelpers, Sidekiq::WebHelpers, ActionView::Helpers::AssetUrlHelper,
+       ActionView::Helpers::JavaScriptHelper, ActionView::Helpers::TagHelper,
+       ActionView::Helpers::AssetTagHelper
     end
 
     DEFAULT_TABS = {

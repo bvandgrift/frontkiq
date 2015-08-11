@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+=begin
 require File.expand_path('../lib/frontkiq/version', __FILE__)
 
 Gem::Specification.new do |gem|
@@ -14,9 +15,33 @@ Gem::Specification.new do |gem|
   gem.name          = "frontkiq"
   gem.require_paths = ["lib"]
   gem.version       = Frontkiq::VERSION
-  gem.add_dependency                  'sidekiq', '~> 3.4', '>= 3.4.2'
   gem.add_dependency                  'sinatra', '~> 1.4', '>= 1.4.6'
   gem.add_development_dependency      'minitest', '~> 5.7', '>= 5.7.0'
   gem.add_development_dependency      'rake', '~> 10.0'
   gem.add_development_dependency      'rails', '~> 4', '>= 3.2.0'
+end
+=end
+
+
+$:.push File.expand_path("../lib", __FILE__)
+
+# Maintain your gem's version:
+require "frontkiq/version"
+
+Gem::Specification.new do |gem|
+  gem.name          = "frontkiq"
+  gem.authors       = ["Ben Vandgrift"]
+  gem.email         = ["ben@vandgrift.com"]
+  gem.summary       = "A front-end sinatra app for sidekiq with Rails asset host support."
+  gem.description   = "A front-end sinatra app for sidekiq with Rails asset host support."
+  gem.homepage      = "http://github.com/tma1/frontkiq"
+  gem.license       = "LGPL-3.0"
+  gem.require_paths = ["lib"]
+  gem.version       = Frontkiq::VERSION
+
+  gem.files = Dir["{app,config,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
+  gem.test_files = Dir["test/**/*"]
+
+  gem.add_dependency "rails",   "~> 4.2.3"
+  gem.add_dependency 'sidekiq', '~> 3.4', '>= 3.4.2'
 end

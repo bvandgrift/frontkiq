@@ -3,10 +3,10 @@
   <head>
     <title><%= environment_title_prefix %><%= Sidekiq::NAME %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link href="<%= frontkiq_path %>stylesheets/bootstrap.css" media="screen" rel="stylesheet" type="text/css" />
-    <link href="<%= frontkiq_path %>stylesheets/application.css" media="screen" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="<%= frontkiq_path %>javascripts/application.js"></script>
-    <script type="text/javascript" src="<%= frontkiq_path %>javascripts/locales/jquery.timeago.<%= locale %>.js"></script>
+    <%= stylesheet_link_tag 'bootstrap.css' %>
+    <%= stylesheet_link_tag 'application.css' %>
+    <%= javascript_include_tag 'application.js' %>
+    <%= javascript_include_tag "jquery.timeago.#{locale}" %>
     <meta name="google" content="notranslate" />
     <%= display_custom_head %>
   </head>

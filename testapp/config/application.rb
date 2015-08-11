@@ -12,5 +12,6 @@ Bundler.require(*Rails.groups)
 
 module Testapp
   class Application < Rails::Application
+    config.asset_host = "http://nonsense.dev:3000"
   end
 end
