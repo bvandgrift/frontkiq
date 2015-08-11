@@ -10,3 +10,5 @@ vendor/
 .bundle/
 .sass-cache/
 tmp/
+devapp/log/*
+test/dummy/log/*
