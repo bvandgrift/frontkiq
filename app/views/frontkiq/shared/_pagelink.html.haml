@@ -1,0 +1,2 @@
+%li{class: ('disabled' if current_page == target_page)}
+  %a{href: url_for(params.merge(page: target_page))}= label || target_page

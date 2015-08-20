@@ -10,7 +10,6 @@ class WebWorker
   end
 end
 
-
 def job_params(job, score)
   "#{score}-#{job['jid']}"
 end

@@ -8,12 +8,11 @@
     - queues.each do |queue|
       %tr
         %td
-          %a{:href => "#{frontkiq_path}queues/#{queue.name}"}= queue.name
+          %a{:href => frontkiq_queued_job_path(name: queue.name)}= queue.name
           - if queue.paused?
             %span.label.label-danger= t('Paused')
         %td
           = number_with_delimiter(queue.size)
         %td{:width => "20%"}
-          %form{:action => "#{frontkiq_path}queues/#{queue.name}", :method => "post"}
-            = csrf_tag
+          = form_tag :whut, frontkiq_queued_job_path(name: queue.name) do
             %input.btn.btn-danger.btn-xs{"data-confirm" => "#{t('AreYouSureDeleteQueue', :queue => h(queue.name))}", :name => "delete", :type => "submit", :value => "#{t('Delete')}"}/

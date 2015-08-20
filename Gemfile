@@ -7,6 +7,7 @@ gem 'haml'
 group :test do
   gem 'simplecov'
   gem 'minitest'
+  gem 'minitest-reporters'
   gem 'minitest-rails-capybara'
 end
 

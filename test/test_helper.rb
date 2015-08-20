@@ -13,8 +13,11 @@ require File.expand_path('../../test/dummy/config/environment.rb',  __FILE__)
 require 'rails/test_help'
 
 require 'minitest/autorun'
-require 'minitest/pride'
+#require 'minitest/pride'
 require 'minitest/rails/capybara'
+
+require "minitest/reporters"
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(fail_fast: true)]
 
 # celluloud config
 require 'celluloid/test'

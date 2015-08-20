@@ -1,0 +1,50 @@
+%body
+  %header.row
+    .col-sm-5
+      %h3= t('Retries')
+    - if retries.size > 0 && total_size > count
+      .col-sm-4
+        = render partial: 'frontkiq/shared/paging', locals: { total_size: total_size, count: count, current_page: current_page }
+    = filtering('retries')
+  - if retries.size > 0
+    = form_tag frontkiq_pending_retries_path do
+      .table_container
+        %table.table.table-striped.table-bordered.table-white
+          %thead
+            %tr
+              %th.table-checkbox{:width => "20px"}
+                %label
+                  %input.check_all{:type => "checkbox"}/
+              %th= t('NextRetry')
+              %th= t('RetryCount')
+              %th= t('Queue')
+              %th= t('Job')
+              %th= t('Arguments')
+              %th= t('Error')
+              %th= t('Actions')
+          - retries.each do |entry|
+            %tr
+              %td.table-checkbox
+                %label
+                  %input{:name => "key[]", :type => "checkbox", :value => "#{job_params(entry.item, entry.score)}"}/
+              %td
+                %a{:href => "#{frontkiq_path}retries/#{job_params(entry.item, entry.score)}"}= relative_time(entry.at)
+              %td= entry['retry_count']
+              %td
+                %a{:href => "#{frontkiq_path}queues/#{entry.queue}"}= entry.queue
+              %td= entry.display_class
+              %td
+                .args= display_args(entry.display_args)
+              %td
+                %div= h truncate("#{entry['error_class']}: #{entry['error_message']}", 200)
+      %a.btn.btn-primary.btn-xs.pull-left{href: frontkiq_retry_path(jid: entry.item, score: entry.score)=> "retry", :type => "submit", :value => "#{t('RetryNow')}"}/
+      %a.btn.btn-danger.btn-xs.pull-left{:name => "delete", :type => "submit", :value => "#{t('Delete')}"}/
+      %a.btn.btn-danger.btn-xs.pull-left{:name => "kill", :type => "submit", :value => "#{t('Kill')}"}/
+    %form{:action => "#{frontkiq_path}retries/all/delete", :method => "post"}
+      = csrf_tag
+      %input.btn.btn-danger.btn-xs.pull-right{"data-confirm" => "#{t('AreYouSure')}", :name => "delete", :type => "submit", :value => "#{t('DeleteAll')}"}/
+    %form{:action => "#{frontkiq_path}retries/all/retry", :method => "post"}
+      = csrf_tag
+      %input.btn.btn-danger.btn-xs.pull-right{"data-confirm" => "#{t('AreYouSure')}", :name => "retry", :type => "submit", :value => "#{t('RetryAll')}"}/
+  - else
+    .alert.alert-success= t('NoRetriesFound')

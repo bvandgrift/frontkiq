@@ -2,18 +2,18 @@
   %header.row
     .col-sm-5
       %h3
-        = t('CurrentMessagesInQueue', :queue => h(@name))
-        - if @queue.paused?
+        = t('CurrentMessagesInQueue', :queue => h(name))
+        - if queue.paused?
           %span.label.label-danger= t('Paused')
     .col-sm-4.pull-right
-      = erb :_paging, :locals => { :url => "#{frontkiq_path}queues/#{@name}" }
+      = render partial: 'frontkiq/shared/paging', locals: { total_size: total_size, count: count, current_page: current_page }
   .table_container
     %table.queue.table.table-hover.table-bordered.table-striped
       %thead
         %th= t('Job')
         %th= t('Arguments')
         %th
-      - @messages.each_with_index do |msg, index|
+      - messages.each_with_index do |msg, index|
         %tr
           %td= h(msg.display_class)
           %td
@@ -25,8 +25,7 @@
             - else
               = h(msg.display_args)
           %td
-            %form{:action => "#{frontkiq_path}queues/#{@name}/delete", :method => "post"}
-              = csrf_tag
+            = form_tag frontkiq_delete_job_url(name: name) do
               %input{:name => "key_val", :type => "hidden", :value => "#{h Sidekiq.dump_json(msg.item)}"}/
               %input.btn.btn-danger.btn-xs{"data-confirm" => "#{t('AreYouSure')}", :name => "delete", :type => "submit", :value => "#{t('Delete')}"}/
-  = erb :_paging, :locals => { :url => "#{frontkiq_path}queues/#{@name}" }
+  = render partial: 'frontkiq/shared/paging', locals: { total_size: total_size, count: count, current_page: current_page }

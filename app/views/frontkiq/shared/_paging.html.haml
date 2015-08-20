@@ -1,0 +1,11 @@
+- if total_size > count
+  - first_page = 1
+  - next_page  = current_page + 1
+  - prev_page  = current_page - 1
+  - last_page  = (total_size.to_f / count).ceil
+  %ul.pagination.pull-right
+    = render 'frontkiq/shared/pagelink', locals: {current_page: current_page, target_page: first_page, label: '«'}
+    = render 'frontkiq/shared/pagelink', locals: {current_page: current_page, target_page: prev_page }
+    = render 'frontkiq/shared/pagelink', locals: {current_page: current_page, target_page: current_page }
+    = render 'frontkiq/shared/pagelink', locals: {current_page: current_page, target_page: next_page }
+    = render 'frontkiq/shared/pagelink', locals: {current_page: current_page, target_page: last_page, label: '»'}
