@@ -1,0 +1,22 @@
+%tr
+  %td.table-checkbox
+    %label
+      %input{:name => "key[]", :type => "checkbox", :value => "#{job_key(entry.item, entry.score)}"}/
+  %td
+    %a{:href => frontkiq_pending_retry_url(key: job_key(entry.item['jid'], entry.score))}
+      %time{datetime: entry.at.getutc.iso8601}= entry.at
+  %td= entry['retry_count']
+  %td
+    %a{:href => frontkiq_queued_job_url(id: entry.queue)}= entry.queue
+  %td= entry.display_class
+  %td
+    .args= display_args(entry.display_args)
+  %td
+    %div= h(truncate("#{entry['error_class']}: #{entry['error_message']}", 200))
+  %td
+    %a.btn.btn-primary.btn-xs.pull-left{href: frontkiq_retry_url(jid: entry.item['jid'], score: entry.score)}
+      = t('RetryNow')
+    %a.btn.btn-danger.btn-xs.pull-left{href: frontkiq_delete_retry_url(jid: entry.item['jid'], score: entry.score)}
+      = t('Delete')
+    %a.btn.btn-danger.btn-xs.pull-left{href: frontkiq_kill_retry_url(jid: entry.item['jid'], score: entry.score)}
+      = t('Kill')

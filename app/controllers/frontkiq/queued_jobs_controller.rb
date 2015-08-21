@@ -6,7 +6,7 @@ class Frontkiq::QueuedJobsController < Frontkiq::FrontkiqController
   end
 
   def show
-    name = queue_params[:name]
+    name = queue_params[:id]
     count = (queue_params[:count] || 25).to_i
     queue = Sidekiq::Queue.new(name)
     render status: 404 unless queue
@@ -37,6 +37,6 @@ class Frontkiq::QueuedJobsController < Frontkiq::FrontkiqController
   end
 
   def queue_params
-    params.permit(:name,:count,:page)
+    params.permit(:id,:name,:count,:page)
   end
 end

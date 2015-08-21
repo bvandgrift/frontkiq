@@ -44,4 +44,14 @@ module Frontkiq::ApplicationHelper
       end
     end
   end
+
+  def job_key(job, score)
+    "#{score}-#{job['jid']}"
+  end
+
+  def display_args(args, truncate_after_chars = 1000)
+    args.map do |arg|
+      h(truncate(to_display(arg)))
+    end.join(", ")
+  end
 end

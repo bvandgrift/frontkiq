@@ -17,6 +17,8 @@ class PendingRetriesTest < Frontkiq::Test
     end
 
     it 'displays retries' do
+      Sidekiq::RetrySet.new.clear
+
       get ROUTE
       assert_equal 200, last_response.status
       assert_match(/found/, last_response.body)
@@ -31,23 +33,26 @@ class PendingRetriesTest < Frontkiq::Test
     end
 
     it 'can display a single retry' do
-      skip("next!")
       params = add_retry
-      get "#{ROUTE}/#{job_params(*params)}"
+      key = job_params(*params)
+      get "#{ROUTE}/show/#{key}"
+
       assert_equal 200, last_response.status
       assert_match(/HardWorker/, last_response.body)
     end
 
     it 'handles missing retry' do
-      skip("next!")
-      get "#{ROUTE}/0-shouldntexist"
+      get "#{ROUTE}/show/0-shouldntexist"
       assert_equal 302, last_response.status
     end
 
     it 'can delete a single retry' do
-      skip("next!")
       params = add_retry
-      post "#{ROUTE}/#{job_params(*params)}/delete"
+      jid = params.first['jid']
+      score = params.second
+
+      get "#{ROUTE}/#{jid}/delete", score: score
+
       assert_equal 302, last_response.status
       assert_equal "http://example.org#{ROUTE}", last_response.header['Location']
 
@@ -57,10 +62,9 @@ class PendingRetriesTest < Frontkiq::Test
     end
 
     it 'can delete all retries' do
-      skip("next!")
       3.times { add_retry }
+      get "#{ROUTE}/delete/all"
 
-      post "#{ROUTE}/delete_all", 'delete' => 'Delete'
       assert_equal 0, Sidekiq::RetrySet.new.size
       assert_equal 302, last_response.status
       assert_equal "http://example.org#{ROUTE}", last_response.header['Location']
@@ -71,11 +75,11 @@ class PendingRetriesTest < Frontkiq::Test
       jid = params.first['jid']
       score = params.second
 
-      post "#{ROUTE}/#{jid}/retry", score: score
+      get "#{ROUTE}/#{jid}/retry", score: score
       assert_equal 302, last_response.status
       assert_equal "http://example.org#{ROUTE}", last_response.header['Location']
 
-      get '/queues/default'
+      get '/frontkiq/queued_jobs/default' # queue named 'default'
       assert_equal 200, last_response.status
       assert_match(/#{params.first['args'][2]}/, last_response.body)
     end
@@ -85,7 +89,7 @@ class PendingRetriesTest < Frontkiq::Test
       jid = params.first['jid']
       score = params.second
 
-      post "#{ROUTE}/#{jid}/kill", score: score
+      get "#{ROUTE}/#{jid}/kill", score: score
       assert_equal 302, last_response.status
       assert_equal "http://example.org#{ROUTE}", last_response.header['Location']
 
@@ -96,16 +100,18 @@ class PendingRetriesTest < Frontkiq::Test
     end
 
     it 'can retry all retries' do
-      skip("next!")
       msg = add_retry.first
       add_retry
 
-      post "#{ROUTE}/retry_all", 'retry' => 'Retry'
-      assert_equal 302, last_response.status
-      assert_equal 'http://example.org#{ROUTE}', last_response.header['Location']
-      assert_equal 2, Sidekiq::Queue.new("default").size
+      pending = Sidekiq::RetrySet.new.count
+      default = Sidekiq::Queue.new('default').size
 
-      get '/queued_jobs/default'
+      get "#{ROUTE}/retry/all"
+      assert_equal 302, last_response.status
+      assert_equal "http://example.org#{ROUTE}", last_response.header['Location']
+      assert_equal (pending + default), Sidekiq::Queue.new("default").size
+
+      get '/frontkiq/queued_jobs/default'
       assert_equal 200, last_response.status
       assert_match(/#{msg['args'][2]}/, last_response.body)
     end

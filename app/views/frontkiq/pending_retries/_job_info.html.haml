@@ -1,0 +1,67 @@
+%body
+  %header
+    %h3= t('Job')
+  .table_container
+    %table.table.table-bordered.table-striped
+      %tbody
+        %tr
+          %th= t('Queue')
+          %td
+            %a{:href => frontkiq_queued_job_url(id: job.queue)}= job.queue
+        %tr
+          %th= t('Job')
+          %td
+            %code= job.display_class
+        %tr
+          %th= t('Arguments')
+          %td
+            %code.code-wrap
+              / We don't want to truncate any job arguments when viewing a single job's status page
+              .args-extended= display_args(job.display_args, nil)
+        %tr
+          %th JID
+          %td
+            %code= job.jid
+        %tr
+          %th= t('Enqueued')
+          %td
+            %time{datetime: job.enqueued_at.getutc.iso8601}= job.enqueued_at
+        -# unless retry_extra_items(job).empty?
+          %tr
+            %th= t('Extras')
+            %td
+              %code
+                = retry_extra_items(job).inspect
+        - if type == :retry
+          - if job['retry_count'] && job['retry_count'] > 0
+            %tr
+              %th= t('RetryCount')
+              %td= job['retry_count']
+            %tr
+              %th= t('LastRetry')
+              %td 
+                - jt = Time.at(job['retried_at'])
+                %time{datetime: jt.getutc.iso8601}= jt
+          - else
+            %tr
+              %th= t('OriginallyFailed')
+              %td
+                - jt = Time.at(job['failed_at'])
+                %time{datetime: jt.getutc.iso8601}= jt
+          %tr
+            %th= t('NextRetry')
+            %td
+              - jt = job.at
+              %time{datetime: jt.getutc.iso8601}= jt
+        - if type == :scheduled
+          %tr
+            %th= t('Scheduled')
+            %td
+              - jt = job.at
+              %time{datetime: jt.getutc.iso8601}= jt
+        - if type == :dead
+          %tr
+            %th= t('LastRetry')
+            %td
+              - jt = job.at
+              %time{datetime: jt.getutc.iso8601}= jt

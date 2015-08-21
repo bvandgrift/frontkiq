@@ -1,0 +1,21 @@
+= render partial: 'job_info', :locals => {:job => @retry, :type => :retry}
+%h3= t('Error')
+.table_container
+  %table.error.table.table-bordered.table-striped
+    %tbody
+      %tr
+        %th= t('ErrorClass')
+        %td
+          %code= @retry['error_class']
+      %tr
+        %th= t('ErrorMessage')
+        %td= h(@retry['error_message'])
+      - if !@retry['error_backtrace'].nil?
+        %tr
+          %th= t('ErrorBacktrace')
+          %td
+            %code= @retry['error_backtrace'].join("<br/>")
+%a.btn.btn-default{:href => frontkiq_pending_retries_url}= t('GoBack')
+- js = {jid: @retry.jid, score: @retry.score}
+%a.btn.btn-default{:href => frontkiq_retry_url(js)}= t('RetryNow')
+%a.btn.btn-default{:href => frontkiq_delete_retry_url(js)}= t('Delete')

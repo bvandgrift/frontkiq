@@ -5,6 +5,7 @@ gem 'rails', '~> 4.2'
 gem 'haml'
 
 group :test do
+  gem 'pry'
   gem 'simplecov'
   gem 'minitest'
   gem 'minitest-reporters'
